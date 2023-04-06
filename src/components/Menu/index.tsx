@@ -27,9 +27,10 @@ export default function ButtonAppBar() {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
+            onClick={() => {localStorage.getItem('token') ? dispatch(changeSideBarState(true)) : navigate('/signIn')}}
           >
             <QuestionAnswerIcon
-              onClick={() => {localStorage.getItem('token') ? dispatch(changeSideBarState(true)) : navigate('/signIn')}}
+              
             />
           </IconButton>
 
@@ -39,8 +40,9 @@ export default function ButtonAppBar() {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
+            onClick={() => {localStorage.getItem('token') ? navigate("/users"): navigate('/signIn')}}
           >
-            <GroupIcon onClick={() => {localStorage.getItem('token') ? navigate("/users"): navigate('/signIn')}} />
+            <GroupIcon  />
           </IconButton>
 
           <IconButton
@@ -49,8 +51,9 @@ export default function ButtonAppBar() {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
+            onClick={() => {localStorage.getItem('token') ? navigate("/profile") : navigate('/signIn')}} 
           >
-            <AccountBoxIcon onClick={() => {localStorage.getItem('token') ? navigate("/profile") : navigate('/signIn')}} />
+            <AccountBoxIcon />
           </IconButton>
 
           <Typography

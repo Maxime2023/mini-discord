@@ -1,12 +1,29 @@
-import { Box } from '@mui/material';
+
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { IUser } from "../../types";
 import CircularProgress from '@mui/material/CircularProgress';
+import * as React from 'react';
+import { styled } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+import Grid from '@mui/material/Grid';
+import GroupsTable from '../../GroupsTable';
+import { useSelector } from 'react-redux';
+import { userOwnedGroups } from '../../../Redux/Store';
 
-const Profile = () => {
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: 'center',
+  color: theme.palette.text.secondary,
+}));
+
+export default function Profile() {
   const [user, setUser] = useState<IUser>();
   const [isLoading, setIsLoading] = useState(false);
+  const ownedGroups = useSelector(userOwnedGroups)
 
   useEffect(() => {
     setIsLoading(true);
@@ -17,9 +34,11 @@ const Profile = () => {
     axios.get(`${apiUrl}/users/1/info`, config)
     .then((res) => {
       setUser(res.data)
+      console.log(res.data)
       setIsLoading(false)
     })
     .catch((error) => console.log(error.message))
+    console.log("dsfsdfsdf", ownedGroups)
   }, [])
 
   if (isLoading) {
@@ -29,20 +48,28 @@ const Profile = () => {
       </Box>
     );
   }
-
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column' }}>
-      <Box>
+    <Box sx={{ flexGrow: 1 }}>
+      <Grid container spacing={2}>
+        <Grid item xs={8}>
+       
+            <GroupsTable/>
+     
+        </Grid>
+        <Grid item xs={4}>
+          <Item>
+          <Box>
           Id : {user?.id}
       </Box>
       <Box>
-          Email : {user?.email}
-        </Box>
-        <Box>
-          Nickname : {user?.nickname}
-        </Box>
+        Email : {user?.email}
+      </Box>
+      <Box>
+        Nickname : {user?.nickname}
+      </Box>
+          </Item>
+        </Grid>
+      </Grid>
     </Box>
   );
-};
-
-export default Profile;
+}

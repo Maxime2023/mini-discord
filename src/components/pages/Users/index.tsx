@@ -88,7 +88,7 @@ const Users = () => {
       <DisplayModal
         open={isModalOpen}
         onClose={() => setModalOpen(false)}
-        title="Il semble que vous n'etes dans aucuns groupe !"
+        title="Il semble que vous n'etes dans aucun groupe !"
         body="Rejoindre un groupe"
       />
       <BasicPagination page={handlePage} numberPage={totalPage} />

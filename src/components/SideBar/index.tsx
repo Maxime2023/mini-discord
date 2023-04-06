@@ -85,7 +85,7 @@ export default function SideBar() {
       const config = {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       };
-      axios.post(`${apiUrl}/group_requests/3`, config).then((res) => {
+      axios.post(`${apiUrl}/group_requests/${groupId}`, config).then((res) => {
         setOpen(true)
       });
     }
@@ -102,7 +102,7 @@ export default function SideBar() {
           ownedGroups.includes(group['@id']) && <ListItemButton style={styleBtn} onClick={(e) => deleteGroup(e, group['@id'])} ><ListItemIcon><DeleteIcon style={{color: "tomato", cursor: "pointer"}}/></ListItemIcon></ListItemButton>
         }
         {
-          !subscribedGroups.includes(group['@id']) &&<ListItemButton style={styleBtn} onClick={(e) => askSubscription(e, group)} ><ListItemIcon><PersonAddAlt1Icon style={{color: "#1876d1", cursor: "pointer"}}/></ListItemIcon></ListItemButton>
+          !subscribedGroups.includes(group['@id']) &&<ListItemButton style={styleBtn} onClick={(e) => askSubscription(e, group['@id'])} ><ListItemIcon><PersonAddAlt1Icon style={{color: "#1876d1", cursor: "pointer"}}/></ListItemIcon></ListItemButton>
         } 
           {      
           <ListItemButton><ListItemIcon><AddCircleIcon onClick={() => navigate(`${group['@id'].replace('/api', "")}/threads`)} style={{color: "#1876d1", cursor: "pointer"}}/></ListItemIcon></ListItemButton>

@@ -53,7 +53,6 @@ export default function SignInSide() {
                     navigate('/users')
                 })
             })
-            // navigate('/users')
         })
         .catch((err) => console.log(err.message))
     };

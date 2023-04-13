@@ -54,7 +54,10 @@ export default function SignInSide() {
                 })
             })
         })
-        .catch((err) => console.log(err.message))
+        .catch((err) => {
+            setLoading(false)
+            console.log(err.message)
+        } )
     };
 
     if (localStorage.getItem('token')) {

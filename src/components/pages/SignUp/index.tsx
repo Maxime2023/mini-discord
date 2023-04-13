@@ -24,9 +24,9 @@ export default function SignUp() {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         const email = data.get('email');
-        const password = data.get('password');
+        const plainPassword = data.get('plainPassword');
         const nickname = data.get('nickname');
-        axios.post(`${apiUrl}`, {email, password, nickname})
+        axios.post(`${apiUrl}/users`, {email, plainPassword, nickname})
         .then((res) => {console.log(res.data)})
     };
 
@@ -75,10 +75,10 @@ export default function SignUp() {
                     <TextField
                     required
                     fullWidth
-                    name="password"
+                    name="plainPassword"
                     label="Mot de passe"
-                    type="password"
-                    id="password"
+                    type="plainPassword"
+                    id="plainPassword"
                     autoComplete="new-password"
                     />
                 </Grid>

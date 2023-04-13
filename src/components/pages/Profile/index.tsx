@@ -3,14 +3,11 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { IUser } from "../../types";
 import CircularProgress from '@mui/material/CircularProgress';
-import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-import GroupsTable from '../../GroupsTable';
-import { useSelector } from 'react-redux';
-import { userOwnedGroups } from '../../../Redux/Store';
+import GroupsAccordion from '../../GroupsAccordion';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -23,7 +20,6 @@ const Item = styled(Paper)(({ theme }) => ({
 export default function Profile() {
   const [user, setUser] = useState<IUser>();
   const [isLoading, setIsLoading] = useState(false);
-  const ownedGroups = useSelector(userOwnedGroups)
 
   useEffect(() => {
     setIsLoading(true);
@@ -38,7 +34,6 @@ export default function Profile() {
       setIsLoading(false)
     })
     .catch((error) => console.log(error.message))
-    console.log("dsfsdfsdf", ownedGroups)
   }, [])
 
   if (isLoading) {
@@ -49,12 +44,10 @@ export default function Profile() {
     );
   }
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, marginTop: 2 }}>
       <Grid container spacing={2}>
         <Grid item xs={8}>
-       
-            <GroupsTable/>
-     
+            <GroupsAccordion/>
         </Grid>
         <Grid item xs={4}>
           <Item>

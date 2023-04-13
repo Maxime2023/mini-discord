@@ -3,41 +3,48 @@ import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { useSelector } from "react-redux";
-import { userOwnedGroups } from "../../Redux/Store";
+import DoneIcon from '@mui/icons-material/Done';
+import { useState } from "react";
+import axios from "axios";
 
-function createData(name: string, calories: number) {
-  return { name, calories };
-}
+export default function GroupsTable({ onChange, users } : any) {
 
-const rows = [
-  createData("Frozen yoghurt", 159),
-  createData("Ice cream sandwich", 237),
-];
+  const handleInputChange = (row: any) => {
+    console.log(row.id)
+    // setChildState(event.target.value);
+    // onChange(row);
+    let body: any = {
+      "targetUser": row["targetUser"],
+      "targetGroup": row["targetGroup"],
+      "status": 0,
+    }
+    console.log(row)
+    const config = {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    };
+    const apiUrl = process.env.REACT_APP_API_URL;
+    axios.post(`${apiUrl}/group_requests/${row.id}/accept`,config, body)
+    .then((res) => console.log(res))
+  };
 
-export default function GroupsTable() {
-  const ownedGroups = useSelector(userOwnedGroups)
+
   return (
+    // <input type="text" value={childState} onChange={handleInputChange} />
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Mes groupes :</TableCell>
-          </TableRow>
-        </TableHead>
         <TableBody>
-          {ownedGroups.map((row: any, i: number) => (
+          {users.length > 0 && users.map((row: any, i: number) => (
             <TableRow
               key={i}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              <TableCell component="th" scope="row">
-                {row}
+              <TableCell >
+                {row['targetUser']}
               </TableCell>
-
+              <TableCell align="left" style={{color: "green", cursor: "pointer"}} onClick={() => handleInputChange(row)}>
+               <DoneIcon/>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

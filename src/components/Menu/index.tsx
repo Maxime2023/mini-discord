@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 import { useNavigate } from "react-router-dom";
-import { sideBarStore, changeSideBarState } from "../../Redux/Store";
+import { changeSideBarState } from "../../Redux/Store";
 import { useDispatch, useSelector } from "react-redux";
 import GroupIcon from "@mui/icons-material/Group";
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
@@ -15,7 +15,6 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 export default function ButtonAppBar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const isSideBarOpen = useSelector(sideBarStore);
 
   return (
     <Box sx={{ flexGrow: 1 }}>

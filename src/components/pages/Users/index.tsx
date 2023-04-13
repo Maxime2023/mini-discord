@@ -9,8 +9,6 @@ import {
 } from "../../../Redux/Store";
 import BasicPagination from "../BasicPagination";
 import DisplayModal from "../../DisplayModal";
-import CircularProgress from "@mui/material/CircularProgress";
-import Box from "@mui/material/Box";
 
 type User = {
   "@id": string;
@@ -24,7 +22,6 @@ const Users = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [isModalOpen, setModalOpen] = useState(false);
   const [totalPage, setTotalPage] = useState(0);
-  const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const dispatch = useDispatch();
   const subscribedGroup = useSelector(userSubscribedGroups);
@@ -35,7 +32,6 @@ const Users = () => {
 
 
   const getUsers = () => {
-    setLoading(true);
     const apiUrl = process.env.REACT_APP_API_URL;
     axios
       .get(`${apiUrl}/users?page=${page}`)
@@ -47,7 +43,6 @@ const Users = () => {
         setUsers(res.data["hydra:member"]);
         setTotalPage(Math.ceil(res.data["hydra:totalItems"] / 30));
         dispatch(usersStore(changeUsersState));
-        setLoading(false);
       })
       .catch((error) => console.log(error.message));
   };
@@ -58,29 +53,12 @@ const Users = () => {
         setModalOpen(true)
       }
     }
-
-  
     getUsers();
   }, []);
 
   useEffect(() => {
     getUsers();
   }, [page]);
-
-  // if (loading === true) {
-  //   return (
-  //     <Box
-  //       sx={{
-  //         display: "flex",
-  //         height: "100vh",
-  //         justifyContent: "center",
-  //         alignItems: "center",
-  //       }}
-  //     >
-  //       <CircularProgress />
-  //     </Box>
-  //   );
-  // }
 
   return (
     <>

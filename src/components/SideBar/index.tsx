@@ -20,6 +20,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DisplayNotification from "../DisplayNotification";
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
+import Tooltip from '@mui/material/Tooltip';
 
 type Anchor = "top" | "left" | "bottom" | "right";
 
@@ -47,7 +48,6 @@ export default function SideBar() {
     };
     axios.get(`${apiUrl}/groups`, config).then((res) => {
       setgroups(res.data['hydra:member']);
-      console.log(res.data['hydra:member'])
       setIsLoading(false);
     });
   }, [isSideBarOpen]);
@@ -85,7 +85,7 @@ export default function SideBar() {
       const config = {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       };
-      axios.post(`${apiUrl}/group_requests/${groupId}`, config).then((res) => {
+      axios.post(`${apiUrl}/group_requests`, {"targetGroup": groupId}, config).then((res) => {
         setOpen(true)
       });
     }
@@ -99,14 +99,14 @@ export default function SideBar() {
       return (
         <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
         {
-          ownedGroups.includes(group['@id']) && <ListItemButton style={styleBtn} onClick={(e) => deleteGroup(e, group['@id'])} ><ListItemIcon><DeleteIcon style={{color: "tomato", cursor: "pointer"}}/></ListItemIcon></ListItemButton>
+          ownedGroups.includes(group['@id']) && <Tooltip title="Supprimer ce groupe"><ListItemButton style={styleBtn} onClick={(e) => deleteGroup(e, group['@id'])} ><ListItemIcon><DeleteIcon style={{color: "tomato", cursor: "pointer"}}/></ListItemIcon></ListItemButton></Tooltip>
         }
         {
-          !subscribedGroups.includes(group['@id']) &&<ListItemButton style={styleBtn} onClick={(e) => askSubscription(e, group['@id'])} ><ListItemIcon><PersonAddAlt1Icon style={{color: "#1876d1", cursor: "pointer"}}/></ListItemIcon></ListItemButton>
+          !subscribedGroups.includes(group['@id']) &&<Tooltip title="Demander à rejoindre ce groupe "><ListItemButton style={styleBtn} onClick={(e) => askSubscription(e, group['@id'])} ><ListItemIcon><PersonAddAlt1Icon style={{color: "#1876d1", cursor: "pointer"}}/></ListItemIcon></ListItemButton></Tooltip>
         } 
-          {      
-          <ListItemButton><ListItemIcon><AddCircleIcon onClick={() => navigate(`${group['@id'].replace('/api', "")}/threads`)} style={{color: "#1876d1", cursor: "pointer"}}/></ListItemIcon></ListItemButton>
-                 }
+        {      
+          subscribedGroups.includes(group['@id']) &&<Tooltip title="Créer un thread"><ListItemButton><ListItemIcon><AddCircleIcon onClick={() => navigate(`${group['@id'].replace('/api', "")}/threads`)} style={{color: "#1876d1", cursor: "pointer"}}/></ListItemIcon></ListItemButton></Tooltip>
+        }
           </div>
       )
     
@@ -128,7 +128,7 @@ export default function SideBar() {
                   <ListItemIcon>
                     <WorkspacesIcon/>
                   </ListItemIcon>
-                  <ListItemText primary={group.name} />
+                  <ListItemText primary={group.name.length > 25 ? group.name.slice(0,25) + "..." : group.name} />
                 </ListItemButton>
                 {handleGroups(group)}
               </ListItem>

@@ -29,10 +29,10 @@ export const slice = createSlice(
                 state.userEmail = action.payload;
             },
             changeOwnedGroups: (state, action) => {
-                state.userOwnedGroups = action.payload;
+                state.ownedGroups = action.payload;
             },
             changeSubscribedGroups: (state, action) => {
-                state.userSubscribedGroups = action.payload;
+                state.subscribedGroups = action.payload;
             },
         },
     }
@@ -49,8 +49,8 @@ export const userEmail = state => state.store.userEmail;
 
 export const userNickName = state => state.store.userNickName;
 
-export const userOwnedGroups = state => state.store.userOwnedGroups;
+export const userOwnedGroups = state => state.store.ownedGroups;
 
-export const userSubscribedGroups = state => state.store.userSubscribedGroups;
+export const userSubscribedGroups = state => state.store.subscribedGroups;
 
 export default slice.reducer;

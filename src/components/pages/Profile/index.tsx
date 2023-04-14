@@ -49,33 +49,8 @@ export default function Profile() {
   return (
     <Container maxWidth="sm" style={{paddingTop: 20}}>
       <ProfileComp email={user?.email} id={user?.id} nickname={user?.nickname}/>
-      {/* <Profile/> */}
-      <Box sx={{padding: 2}}>      Mes groupes :</Box>
-
+      <Box sx={{padding: 2}}>      Mes groupes créés :</Box>
       <GroupsAccordion/>
     </Container>
-    // <Box sx={{ flexGrow: 1, marginTop: 2 }}>
-    //   <Grid container spacing={2}>
-    //     <Grid item xs={8}>
-    //         <GroupsAccordion/>
-    //     </Grid>
-    //     <Grid item xs={4}>
-    //       <Item>
-    //       <Box>
-    //       Id : {user?.id}
-    //   </Box>
-    //   <Box>
-    //     Email : {user?.email}
-    //   </Box>
-    //   <Box>
-    //     Nickname : {user?.nickname}
-    //   </Box>
-    //   <Button>
-    //     Supprimer mon compte
-    //   </Button>
-    //       </Item>
-    //     </Grid>
-    //   </Grid>
-    // </Box>
   );
 }

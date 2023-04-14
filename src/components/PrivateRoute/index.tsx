@@ -1,22 +1,16 @@
-import React from "react";
-import SignInSide from "../pages/SignIn";
-import { Route, redirect } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+import SignInSide from '../pages/SignIn';
 
-function PrivateRoute({ component: Component, ...rest }: any) {
-  const isAuthenticated = localStorage.getItem("token");
-  console.log(...rest)
-  return (
-    <Route
-      {...rest}
-      render={(props: any) =>
-        isAuthenticated ? (
-          <Component {...props} />
-        ) : 
-        <SignInSide/>
-        
-      }
-    />
-  );
-}
+const PrivateRoute = ({ children }: any) => {
+  console.log("children", children)
+  const navigate = useNavigate()
+  if (!localStorage.getItem("token")) {
+    console.log("laaa")
+    navigate("/signIn")
+    return <SignInSide/>
+  }
 
-export default PrivateRoute;
+  return children;
+};
+
+export default PrivateRoute

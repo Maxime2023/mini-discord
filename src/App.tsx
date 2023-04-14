@@ -79,41 +79,16 @@ function App() {
       <Routes>
       <Route path="/" element={<SignInSide />} />
       <Route path="/signUp" element={<SignUp />} />
-      <Route path="/groups/:id" element={<Group />} />
-      <Route path="/groups/:id/threads" element={<CreateThread />} />
-      <Route path="/groups/:id/threads/:threadId" element={<Thread />} />
-      <Route path="/profile" element={<Profile />} />
       <Route path="/signIn" element={<SignInSide />} />
-      <Route path="/users" element={<Users />} />
-      <Route path="/users/:userId" element={<User />} />
-      <Route path="/create-group" element={<CreateGroup />} />
+      <Route path="/groups/:id" element={<PrivateRoute><Group /></PrivateRoute>} />
+      <Route path="/groups/:id/threads" element={<PrivateRoute><CreateThread /></PrivateRoute>} />
+      <Route path="/groups/:id/threads/:threadId" element={<PrivateRoute><Thread /></PrivateRoute>} />
+      <Route path="/profile" element={<PrivateRoute><Profile/></PrivateRoute>} />
+      <Route path="/users" element={<PrivateRoute><Users /></PrivateRoute>} />
+      <Route path="/users/:userId" element={<PrivateRoute><User /></PrivateRoute>} />
+      <Route path="/create-group" element={<PrivateRoute><CreateGroup /></PrivateRoute>} />
       <Route path="*" element={<NoPage />} />
 
-      {/* <Route path="/" element={MiddleWare(<Users />)} />
-      <Route path="/signUp" element={<SignUp />} />
-      <Route path="/groups/:id" element={MiddleWare(<Group />)} />
-      <Route path="/groups/:id/threads" element={MiddleWare(<CreateThread />)} />
-      <Route path="/groups/:id/threads/:threadId" element={MiddleWare(<Thread />)} />
-      <Route path="/profile" element={MiddleWare(<Profile />)} />
-      <Route path="/signIn" element={<SignInSide />} />
-      <Route path="/users" element={MiddleWare(<Users />)} />
-      <Route path="/users/:userId" element={MiddleWare(<User />)} />
-      <Route path="/create-group" element={MiddleWare(<CreateGroup />)} />
-      <Route path="*" element={MiddleWare(<NoPage />)} /> */}
-
-    {/* <Route path="/" element={MiddleWare(<Users />)} />
-      <Route path="/signUp" element={<SignUp />} />
-      <Route path="/groups/:id" element={MiddleWare(<Group />)} />
-      <Route path="/groups/:id/threads" element={MiddleWare(<CreateThread />)} />
-      <Route path="/groups/:id/threads/:threadId" element={MiddleWare(<Thread />)} />
-      <Route path="/profile" element={MiddleWare(<Profile />)} />
-      <Route path="/signIn" element={<SignInSide />} />
-      <Route path="/users" element={MiddleWare(<Users />)} />
-      <Route path="/users/:userId" element={MiddleWare(<User />)} />
-      <Route path="/create-group" element={MiddleWare(<CreateGroup />)} />
-      <Route path="*" element={MiddleWare(<NoPage />)} /> */}
-      
-      
       </Routes>
     </Router>
   );

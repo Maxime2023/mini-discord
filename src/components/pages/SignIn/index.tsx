@@ -13,6 +13,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import CircularProgress from "@mui/material/CircularProgress";
+import { Alert } from '@mui/material';
 import { changeUserEmail, changeUserNickName, changeUserId, changeOwnedGroups, changeSubscribedGroups } from '../../../Redux/Store';
 import axios from 'axios';
 
@@ -22,11 +23,10 @@ export default function SignInSide() {
     const [isLoading, setLoading] = useState(false)
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const [error, setError] = useState(false);
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         setLoading(true);
-        // const apiUrl = process.env.REACT_APP_API_URL;
-
         const apiUrl = 'https://ynov-workplace.osc-fr1.scalingo.io/auth'
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -56,6 +56,7 @@ export default function SignInSide() {
         })
         .catch((err) => {
             setLoading(false)
+            setError(true);
             console.log(err.message)
         } )
     };
@@ -108,9 +109,11 @@ export default function SignInSide() {
                     name="email"
                     autoComplete="email"
                     autoFocus
+                    onFocus={() => setError(false)}
                 />
                 <TextField
                     margin="normal"
+                    onFocus={() => setError(false)}
                     required
                     fullWidth
                     name="password"
@@ -131,6 +134,7 @@ export default function SignInSide() {
                 "Se connecter"
               )}
                 </Button>
+                {error && <Alert severity="error">Invalid username or password</Alert>}
                 <Grid container>
                     <Grid item>
                     <Link style={{cursor: 'pointer'}} variant="body2" onClick={() => navigate('/signUp')}>

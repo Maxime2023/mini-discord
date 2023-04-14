@@ -4,7 +4,7 @@ const NoPage = () => {
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
       <Typography>
-        Not found page works
+        Not found page
       </Typography>
     </Box>
   );

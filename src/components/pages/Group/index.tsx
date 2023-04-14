@@ -5,12 +5,6 @@ import axios from 'axios';
 import DisplayThreads from '../../DisplayThreads';
 import { useParams } from 'react-router-dom';
 
-interface MyObject {
-  relatedGroup: string;
-  // Add other properties here
-}
-
-
 const Group = () => {
   const [threads, setThreads] = useState([]);
   const [isLoading, setLoading] = useState(false);
@@ -23,12 +17,17 @@ const Group = () => {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     };
     axios.get(`${apiUrl}/threads`,  config).then((res) => {
-      console.log("sdfsdfsdfsfsdf")
       setLoading(false)
       setThreads(res.data["hydra:member"].filter((x: any) => x.relatedGroup.replace("/api/groups/", "") === id))
-      console.log(res.data["hydra:member"].filter((x: any) => x.relatedGroup.replace("/api/groups/", "") === id))
     });
   }, [id])
+
+  const handleChange = (childState: any) => {
+    console.log("before => ", threads)
+    console.log(childState)
+    console.log("after => ", threads.filter(x => x["@id"] !== childState))
+    setThreads(threads.filter(x => x["@id"] !== childState));
+  };
 
   if (isLoading) {
     return (
@@ -39,7 +38,7 @@ const Group = () => {
   }
 
   return (
-      <DisplayThreads threads={threads}/>
+      <DisplayThreads threads={threads} onChange={handleChange} />
   );
 };
 

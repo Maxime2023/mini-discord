@@ -23,7 +23,7 @@ import {
   changeSubscribedGroups,
 } from "./Redux/Store";
 import axios from "axios";
-import MiddleWare from "./components/MiddleWare";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   const dispatch = useDispatch();
@@ -77,7 +77,7 @@ function App() {
       <Menu />
       <SideBar />
       <Routes>
-      <Route path="/" element={<Users />} />
+      <Route path="/" element={<SignInSide />} />
       <Route path="/signUp" element={<SignUp />} />
       <Route path="/groups/:id" element={<Group />} />
       <Route path="/groups/:id/threads" element={<CreateThread />} />
@@ -90,16 +90,30 @@ function App() {
       <Route path="*" element={<NoPage />} />
 
       {/* <Route path="/" element={MiddleWare(<Users />)} />
-      <Route path="/signUp" element={MiddleWare(<SignUp />)} />
+      <Route path="/signUp" element={<SignUp />} />
       <Route path="/groups/:id" element={MiddleWare(<Group />)} />
       <Route path="/groups/:id/threads" element={MiddleWare(<CreateThread />)} />
       <Route path="/groups/:id/threads/:threadId" element={MiddleWare(<Thread />)} />
       <Route path="/profile" element={MiddleWare(<Profile />)} />
-      <Route path="/signIn" element={MiddleWare(<SignInSide />)} />
+      <Route path="/signIn" element={<SignInSide />} />
       <Route path="/users" element={MiddleWare(<Users />)} />
       <Route path="/users/:userId" element={MiddleWare(<User />)} />
       <Route path="/create-group" element={MiddleWare(<CreateGroup />)} />
       <Route path="*" element={MiddleWare(<NoPage />)} /> */}
+
+    {/* <Route path="/" element={MiddleWare(<Users />)} />
+      <Route path="/signUp" element={<SignUp />} />
+      <Route path="/groups/:id" element={MiddleWare(<Group />)} />
+      <Route path="/groups/:id/threads" element={MiddleWare(<CreateThread />)} />
+      <Route path="/groups/:id/threads/:threadId" element={MiddleWare(<Thread />)} />
+      <Route path="/profile" element={MiddleWare(<Profile />)} />
+      <Route path="/signIn" element={<SignInSide />} />
+      <Route path="/users" element={MiddleWare(<Users />)} />
+      <Route path="/users/:userId" element={MiddleWare(<User />)} />
+      <Route path="/create-group" element={MiddleWare(<CreateGroup />)} />
+      <Route path="*" element={MiddleWare(<NoPage />)} /> */}
+      
+      
       </Routes>
     </Router>
   );

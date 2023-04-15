@@ -3,12 +3,13 @@ import Grid from "@mui/material/Grid";
 import { useNavigate, useParams } from "react-router-dom";
 import MediaControlCard from "../MediaControlCard";
 import Container from "@mui/material/Container";
+import BasicPagination from "../pages/BasicPagination";
+import CircularProgress from "@mui/material/CircularProgress";
 
-export default function DisplayThreads({ threads, onChange }: any) {
+export default function DisplayThreads({ threads, onChange, totalPageThreads, handlePageThreads, loading }: any) {
   let { id } = useParams();
   const navigate = useNavigate();
   const displayThread = (thread: any, i: number) => {
-    console.log(thread);
     return (
       <Grid
         onClick={() =>
@@ -21,6 +22,20 @@ export default function DisplayThreads({ threads, onChange }: any) {
       </Grid>
     );
   };
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   if (threads.length === 0) {
     return (
@@ -35,6 +50,7 @@ export default function DisplayThreads({ threads, onChange }: any) {
       <Grid container spacing={2}>
         {threads.map((thread: any, i: number) => displayThread(thread, i))}
       </Grid>
+      {totalPageThreads > 0 && <BasicPagination page={handlePageThreads} numberPage={Math.ceil(totalPageThreads / 30)} />}
     </Box>
   );
 }

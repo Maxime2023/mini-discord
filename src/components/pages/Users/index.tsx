@@ -30,21 +30,6 @@ const Users = () => {
     setPage(page);
   };
 
-  // const getUsers = () => {
-  //   const apiUrl = process.env.REACT_APP_API_URL;
-  //   axios
-  //     .get(`${apiUrl}/users?page=${page}`)
-  //     .then((res) => {
-  //       window.scrollTo({
-  //         top: 0,
-  //         behavior: "smooth",
-  //       });
-  //       setUsers(res.data["hydra:member"]);
-  //       setTotalPage(Math.ceil(res.data["hydra:totalItems"] / 30));
-  //       dispatch(usersStore(changeUsersState));
-  //     })
-  //     .catch((error) => console.log(error.message));
-  // };
 
   useEffect(() => {
     const getUsers = () => {
@@ -71,10 +56,6 @@ const Users = () => {
     getUsers();
   }, [subscribedGroup, page, dispatch]);
   
-
-  // useEffect(() => {
-  //   getUsers();
-  // }, [page]);
 
   return (
     <>

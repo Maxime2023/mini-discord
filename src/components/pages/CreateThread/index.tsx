@@ -19,7 +19,7 @@ const theme = createTheme();
 export default function CreateThread() {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
-  const { id } = useParams()
+  const { id } = useParams();
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     setLoading(true);
     event.preventDefault();
@@ -27,14 +27,14 @@ export default function CreateThread() {
     const body = {
       title: data.get("title"),
       content: data.get("content"),
-      relatedGroup: `api/groups/${id}`
+      relatedGroup: `api/groups/${id}`,
     };
-    console.log(body, id)
+    console.log(body, id);
     const apiUrl = process.env.REACT_APP_API_URL;
     const config = {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     };
-    axios.post(`${apiUrl}/threads`, body,  config).then((res) => {
+    axios.post(`${apiUrl}/threads`, body, config).then((res) => {
       setLoading(false);
       setOpen(true);
     });

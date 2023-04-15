@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import Container from '@mui/material/Container';
+import Container from "@mui/material/Container";
 import { CircularProgress } from "@mui/material";
 
 interface IMessage {
@@ -46,9 +46,8 @@ const MessagingComponent: React.FC<IChatProps> = ({ username }) => {
     axios.get(`${apiUrl}/threads/${threadId}/messages`, config).then((res) => {
       setMessages(res.data["hydra:member"]);
       setIsLoading(false);
-      console.log(res.data);
     });
-  }, []);
+  }, [threadId]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
@@ -58,7 +57,6 @@ const MessagingComponent: React.FC<IChatProps> = ({ username }) => {
     event.preventDefault();
     if (inputValue.trim() !== "") {
       const apiUrl = process.env.REACT_APP_API_URL;
-      console.log(`${apiUrl}/me`);
       const config = {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       };
@@ -70,9 +68,6 @@ const MessagingComponent: React.FC<IChatProps> = ({ username }) => {
           { content: inputValue, thread: `api/threads/${threadId}` },
           config
         )
-        .then((res) => {
-          console.log(res.data);
-        });
     }
   };
 
@@ -93,62 +88,61 @@ const MessagingComponent: React.FC<IChatProps> = ({ username }) => {
 
   return (
     <>
-    <Container maxWidth="sm">
-    <Stack
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        height: "100%",
-        justifyContent: "space-between",
-      }}
-      spacing={2}
-    >
-      <Stack
-        sx={{
-          flexGrow: 1,
-          overflow: "auto",
-          height: "80vh"
-        }}
-        spacing={1}
-      >
-        {messages.map((message, index) => (
-          <Typography key={index}>
-            <strong>{message.owner}: </strong>
-            {message.content}
-          </Typography>
-        ))}
-        <div ref={messagesEndRef} />
-      </Stack>
-     
-    </Stack>
-    </Container>
-     <form onSubmit={handleSubmit}>
-     <Stack
-       spacing={1}
-       direction="row"
-       style={{
-         position: "fixed",
-         bottom: 0,
-         padding: 20,
-         width: "100%",
-         display: "flex",
-         justifyContent: "center",
-         alignItems: "center"
-       }}
-     >
-       <TextField
-         label="Message"
-         variant="outlined"
-         size="small"
-         value={inputValue}
-         onChange={handleInputChange}
-       />
-       <Button variant="contained" type="submit">
-         Envoyer
-       </Button>
-     </Stack>
-   </form>
-   </>
+      <Container maxWidth="sm">
+        <Stack
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            height: "100%",
+            justifyContent: "space-between",
+          }}
+          spacing={2}
+        >
+          <Stack
+            sx={{
+              flexGrow: 1,
+              overflow: "auto",
+              height: "80vh",
+            }}
+            spacing={1}
+          >
+            {messages.map((message, index) => (
+              <Typography key={index}>
+                <strong>{message.owner}: </strong>
+                {message.content}
+              </Typography>
+            ))}
+            <div ref={messagesEndRef} />
+          </Stack>
+        </Stack>
+      </Container>
+      <form onSubmit={handleSubmit}>
+        <Stack
+          spacing={1}
+          direction="row"
+          style={{
+            position: "fixed",
+            bottom: 0,
+            padding: 20,
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <TextField
+            label="Message"
+            variant="outlined"
+            size="small"
+            value={inputValue}
+            onChange={handleInputChange}
+          />
+          <Button variant="contained" type="submit">
+            Envoyer
+          </Button>
+        </Stack>
+      </form>
+    </>
   );
 };
 

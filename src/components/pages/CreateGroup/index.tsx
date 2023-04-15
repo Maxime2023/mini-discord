@@ -30,7 +30,7 @@ export default function CreateGroup() {
     const config = {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     };
-    axios.post(`${apiUrl}/groups`, body,  config).then((res) => {
+    axios.post(`${apiUrl}/groups`, body, config).then((res) => {
       setLoading(false);
       setOpen(true);
     });

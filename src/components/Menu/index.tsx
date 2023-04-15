@@ -1,4 +1,3 @@
-import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -8,9 +7,9 @@ import IconButton from "@mui/material/IconButton";
 import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 import { useNavigate } from "react-router-dom";
 import { changeSideBarState } from "../../Redux/Store";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import GroupIcon from "@mui/icons-material/Group";
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
 
 export default function ButtonAppBar() {
   const navigate = useNavigate();
@@ -26,11 +25,13 @@ export default function ButtonAppBar() {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
-            onClick={() => {localStorage.getItem('token') ? dispatch(changeSideBarState(true)) : navigate('/signIn')}}
+            onClick={() => {
+              localStorage.getItem("token")
+                ? dispatch(changeSideBarState(true))
+                : navigate("/signIn");
+            }}
           >
-            <QuestionAnswerIcon
-              
-            />
+            <QuestionAnswerIcon />
           </IconButton>
 
           <IconButton
@@ -39,9 +40,13 @@ export default function ButtonAppBar() {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
-            onClick={() => {localStorage.getItem('token') ? navigate("/users"): navigate('/signIn')}}
+            onClick={() => {
+              localStorage.getItem("token")
+                ? navigate("/users")
+                : navigate("/signIn");
+            }}
           >
-            <GroupIcon  />
+            <GroupIcon />
           </IconButton>
 
           <IconButton
@@ -50,7 +55,11 @@ export default function ButtonAppBar() {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
-            onClick={() => {localStorage.getItem('token') ? navigate("/profile") : navigate('/signIn')}} 
+            onClick={() => {
+              localStorage.getItem("token")
+                ? navigate("/profile")
+                : navigate("/signIn");
+            }}
           >
             <AccountBoxIcon />
           </IconButton>
@@ -59,7 +68,11 @@ export default function ButtonAppBar() {
             variant="h6"
             component="div"
             sx={{ flexGrow: 1 }}
-            onClick={() => {localStorage.getItem('token') ? navigate("/users"):  navigate('/signIn')}}
+            onClick={() => {
+              localStorage.getItem("token")
+                ? navigate("/users")
+                : navigate("/signIn");
+            }}
           ></Typography>
           <Button
             color="inherit"

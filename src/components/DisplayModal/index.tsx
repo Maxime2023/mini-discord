@@ -1,19 +1,19 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
-import { useDispatch } from 'react-redux';
-import { sideBarStore, changeSideBarState } from '../../Redux/Store';
+import * as React from "react";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
+import { useDispatch } from "react-redux";
+import { changeSideBarState } from "../../Redux/Store";
 
 const style = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
+  bgcolor: "background.paper",
+  border: "2px solid #000",
   boxShadow: 24,
   p: 4,
 };
@@ -26,11 +26,11 @@ interface ModalProps {
 }
 
 const DisplayModal: React.FC<ModalProps> = ({ open, onClose, title, body }) => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const handleJoin = () => {
     onClose();
-    dispatch(changeSideBarState(true))
-  }
+    dispatch(changeSideBarState(true));
+  };
   return (
     <div>
       <Modal
@@ -44,11 +44,14 @@ const DisplayModal: React.FC<ModalProps> = ({ open, onClose, title, body }) => {
             {title}
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            <Button onClick={() => handleJoin()} variant='contained'>  {body}</Button>
+            <Button onClick={() => handleJoin()} variant="contained">
+              {" "}
+              {body}
+            </Button>
           </Typography>
         </Box>
       </Modal>
     </div>
   );
-}
-export default DisplayModal
+};
+export default DisplayModal;

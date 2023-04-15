@@ -52,10 +52,10 @@ function App() {
             setLoading(false)
         })
         });
-        return;
+     
     }
     setLoading(false);
-  }, [])
+  }, [dispatch])
 
   if (isLoading) {
     return (

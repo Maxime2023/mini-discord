@@ -1,5 +1,5 @@
-import React from 'react';
-import {  Snackbar } from '@mui/material';
+import React from "react";
+import { Snackbar } from "@mui/material";
 
 interface NotificationProps {
   message: string;
@@ -8,9 +8,19 @@ interface NotificationProps {
   onClose: () => void;
 }
 
-const DisplayNotification: React.FC<NotificationProps> = ({ message, duration = 3000, open, onClose }) => {
+const DisplayNotification: React.FC<NotificationProps> = ({
+  message,
+  duration = 3000,
+  open,
+  onClose,
+}) => {
   return (
-    <Snackbar open={open} onClose={onClose} message={message} autoHideDuration={duration} />
+    <Snackbar
+      open={open}
+      onClose={onClose}
+      message={message}
+      autoHideDuration={duration}
+    />
   );
 };
 export default DisplayNotification;

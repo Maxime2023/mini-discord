@@ -38,7 +38,7 @@ export default function SignInSide() {
                 headers: { Authorization: `Bearer ${response.data.token}` }
               };
             localStorage.setItem("token", response.data.token)
-            axios.get(`${process.env.REACT_APP_API_URL}/users/1/info`, config)
+            axios.get(`${process.env.REACT_APP_API_URL}/users/9/info`, config)
             .then((user) => {
                 const {email, id, nickname} = user.data
                 dispatch(changeUserEmail(email));

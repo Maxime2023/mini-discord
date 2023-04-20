@@ -3,7 +3,6 @@ import Grid from "@mui/material/Grid";
 import { useNavigate, useParams } from "react-router-dom";
 import MediaControlCard from "../MediaControlCard";
 import Container from "@mui/material/Container";
-import BasicPagination from "../pages/BasicPagination";
 import CircularProgress from "@mui/material/CircularProgress";
 
 export default function DisplayThreads({ threads, onChange, totalPageThreads, handlePageThreads, loading }: any) {
@@ -50,7 +49,9 @@ export default function DisplayThreads({ threads, onChange, totalPageThreads, ha
       <Grid container spacing={2}>
         {threads.map((thread: any, i: number) => displayThread(thread, i))}
       </Grid>
-      {totalPageThreads > 0 && <BasicPagination page={handlePageThreads} numberPage={Math.ceil(totalPageThreads / 30)} />}
+      
+      {/* impossible de bien utiliser la pagination car elle ne fonctionne pas sur le endpoint api/threads 
+      {totalPageThreads > 0 && <BasicPagination page={handlePageThreads} numberPage={Math.ceil(totalPageThreads / 30)} />} */} 
     </Box>
   );
 }

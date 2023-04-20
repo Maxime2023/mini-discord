@@ -20,7 +20,7 @@ export default function GroupsTable({ onChange, users }: any) {
     };
     const apiUrl = process.env.REACT_APP_API_URL;
     axios
-      .post(`${apiUrl}/group_requests/${row.id}/accept`, config, body)
+      .post(`${apiUrl}/group_requests/${row.id}/accept`,body, config)
       .then((res) => console.log(res));
   };
 

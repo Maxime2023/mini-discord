@@ -18,7 +18,7 @@ export default function Profile() {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     };
     axios
-      .get(`${apiUrl}/users/1/info`, config)
+      .get(`${apiUrl}/users/9/info`, config)
       .then((res) => {
         setUser(res.data);
         setIsLoading(false);

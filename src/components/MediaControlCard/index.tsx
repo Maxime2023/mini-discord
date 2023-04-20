@@ -4,9 +4,13 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
+import { userId } from "../../Redux/Store";
+import { useSelector } from "react-redux";
 
 export default function MediaControlCard({ thread, onChange }: any) {
   const { owner, title } = thread;
+  const user = useSelector(userId);
+  console.log(user, owner)
 
   const deleteThread = (event: any) => {
     event.stopPropagation();
@@ -43,9 +47,7 @@ export default function MediaControlCard({ thread, onChange }: any) {
           >
             {owner}
           </Typography>
-          <Button variant="contained" onClick={(e) => deleteThread(e)}>
-            Supprimer le thread
-          </Button>
+          { owner.replace("/api/users/", "") === user.toString() && <Button variant="contained" onClick={(e) => deleteThread(e)}>Supprimer le thread</Button>}
         </CardContent>
       </Box>
     </Card>

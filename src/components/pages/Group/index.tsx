@@ -1,6 +1,4 @@
-import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
-import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
 import DisplayThreads from "../../DisplayThreads";
 import { useParams } from "react-router-dom";
@@ -62,20 +60,24 @@ const Group = () => {
   }, [id, page, pageThreads]);
 
   useEffect(() => {
-    setPageThreads(1)
-    console.log("pageThreads", search)
+    // setPageThreads(1)
+    // console.log("pageThreads", search)
     setLoading(true);
     const apiUrl = process.env.REACT_APP_API_URL;
     const config = {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     };
-    axios.get(`${apiUrl}/search?page=${pageThreads}&title=${search}`, config).then((res) => {
-      console.log(res.data["hydra:member"][0].relatedGroup)
-      setThreads(
-        res.data["hydra:member"].filter(
-          (x: any) => x.relatedGroup.replace("/api/groups/", "") === id
-        )
-      );
+    axios.get(`${apiUrl}/search?page=1&title=${search}`, config).then((res) => {
+      console.log(res.data["hydra:member"])
+      const test = res.data["hydra:member"]
+      for(let i in test) {
+        console.log(test[i].relatedGroup)
+      } // impossible de filtrer car des groupes on un relatedGroup vide
+      // setThreads(
+      //   res.data["hydra:member"].filter(
+      //     (x: any) => x.relatedGroup.replace("/api/groups/", "") === id
+      //   )
+      // );
       setThreads(res.data["hydra:member"])
       setLoading(false);
       setTotalPageThreads(res.data["hydra:totalItems"])

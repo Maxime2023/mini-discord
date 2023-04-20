@@ -37,7 +37,7 @@ function App() {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       };
       axios
-        .get(`${process.env.REACT_APP_API_URL}/users/1/info`, config)
+        .get(`${process.env.REACT_APP_API_URL}/users/9/info`, config)
         .then((res) => {
           const { email, id, nickname } = res.data;
           dispatch(changeUserEmail(email));

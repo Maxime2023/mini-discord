@@ -19,6 +19,7 @@ import {
 import GroupIcon from "@mui/icons-material/Group";
 import { useEffect, useState } from "react";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
+import BasicPagination from "../pages/BasicPagination";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -39,6 +40,8 @@ export default function SideBar() {
   const [groups, setgroups] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [open, setOpen] = useState(false);
+  const [totalPage, setTotalPage] = useState(0);
+  const [page, setPage] = useState(1);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -51,11 +54,16 @@ export default function SideBar() {
     const config = {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     };
-    axios.get(`${apiUrl}/groups`, config).then((res) => {
+    axios.get(`${apiUrl}/groups?page=${page}`, config).then((res) => {
       setgroups(res.data["hydra:member"]);
       setIsLoading(false);
+      setTotalPage(Math.ceil(res.data["hydra:totalItems"] / 30));
     });
-  }, [isSideBarOpen]);
+  }, [isSideBarOpen, page]);
+
+  const handlePage = (page: number) => {
+    setPage(page);
+  };
 
   const toggleDrawer =
     (anchor: Anchor, open: boolean) =>
@@ -230,6 +238,7 @@ export default function SideBar() {
       </List>
       <Divider />
       {listElements()}
+
     </Box>
   );
 
@@ -247,6 +256,7 @@ export default function SideBar() {
           onClose={toggleDrawer("left", false)}
         >
           {list("left")}
+          <BasicPagination page={handlePage} numberPage={totalPage} />
         </Drawer>
       </React.Fragment>
     </div>

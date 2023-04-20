@@ -8,6 +8,8 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import Container from "@mui/material/Container";
 import { CircularProgress } from "@mui/material";
+import {userId, userNickName} from "../../Redux/Store"
+import { useSelector } from "react-redux";
 
 interface IMessage {
   owner: string;
@@ -24,6 +26,8 @@ const MessagingComponent: React.FC<IChatProps> = ({ username }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   let { threadId } = useParams();
+  const user: any = useSelector(userId);
+  const nickname: any = useSelector(userNickName);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -43,10 +47,13 @@ const MessagingComponent: React.FC<IChatProps> = ({ username }) => {
     const config = {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     };
-    axios.get(`${apiUrl}/threads/${threadId}/messages`, config).then((res) => {
-      setMessages(res.data["hydra:member"]);
-      setIsLoading(false);
-    });
+    // setInterval(() => {
+      axios.get(`${apiUrl}/threads/${threadId}/messages`, config).then((res) => {
+        setMessages(res.data["hydra:member"]);
+        setIsLoading(false);
+      });
+    // }, 1000);
+
   }, [threadId]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -86,6 +93,40 @@ const MessagingComponent: React.FC<IChatProps> = ({ username }) => {
     );
   }
 
+  const handleMessages = (message: any, index: any) => {
+    let owner = message.owner.replace("/api/users/", "")
+    console.log(message.owner.replace("/api/users/", ""), user, nickname)
+    if (owner === user.toString() || owner === nickname) {
+      return (
+        <Box style={{color: "black", justifyContent: "right", display: "flex", flexDirection: "column", padding: 5}}>
+          <Box style={{textAlign: 'right', backgroundColor: "lightgray", padding: 10, borderRadius: 10}}>
+          <Typography key={index} >
+        <strong> {message.owner} :</strong>
+        <div>{message.content}</div>
+        </Typography>
+          </Box>
+
+        </Box>
+
+      ) 
+    }
+    return (
+      <Box style={{color: "black", justifyContent: "right", display: "flex", flexDirection: "column", padding: 5}}>
+      <Box style={{textAlign: 'left', backgroundColor: "#1876d1", padding: 10, borderRadius: 10, color: "white"}}>
+      <Typography key={index} >
+    <strong> {message.owner} :</strong>
+    <div>{message.content}</div>
+    </Typography>
+      </Box>
+
+    </Box>
+    //   <Typography key={index} style={{color: "#1876d1"}}>
+    //   <strong>{message.owner}: </strong>
+    //   <div>{message.content}</div>
+    // </Typography>
+    )
+  }
+
   return (
     <>
       <Container maxWidth="sm">
@@ -106,12 +147,9 @@ const MessagingComponent: React.FC<IChatProps> = ({ username }) => {
             }}
             spacing={1}
           >
-            {messages.map((message, index) => (
-              <Typography key={index}>
-                <strong>{message.owner}: </strong>
-                {message.content}
-              </Typography>
-            ))}
+            {messages.map((message, index) => 
+              handleMessages(message, index)
+            )}
             <div ref={messagesEndRef} />
           </Stack>
         </Stack>
@@ -131,7 +169,7 @@ const MessagingComponent: React.FC<IChatProps> = ({ username }) => {
           }}
         >
           <TextField
-            label="Message"
+            label="Ecrivez votre Message"
             variant="outlined"
             size="small"
             value={inputValue}

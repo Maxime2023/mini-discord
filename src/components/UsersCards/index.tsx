@@ -5,8 +5,6 @@ import { Grid, Paper, Box } from "@mui/material";
 import { loggedUsers } from "../../Redux/Store";
 import { useSelector } from "react-redux";
 
-
-
 interface User {
   "@id": string;
   "@type": string;
@@ -19,24 +17,28 @@ interface UsersProps {
   users: User[] | null;
 }
 
-
-
 const UsersCard = ({ users }: UsersProps) => {
   const navigate = useNavigate();
   const usersLogged = useSelector(loggedUsers);
 
   const handleBadge = (email: string) => {
-    console.log("stp", usersLogged)
-    if (usersLogged.includes(email)) {
+    if (usersLogged.some((item: any) => item.user === email)) {
       return (
-        <Box sx={{backgroundColor: "limegreen", height: "20px", width: "20px", borderRadius: "20px", marginLeft: "10px"}}></Box>
-      )
+        <Box
+          sx={{
+            backgroundColor: "limegreen",
+            height: "20px",
+            width: "20px",
+            borderRadius: "20px",
+            marginLeft: "10px",
+          }}
+        ></Box>
+      );
     }
-  }
+  };
 
   const mapUsers = (users: any) => {
     return users?.map((user: any, i: any) => (
-
       <Grid item xs={4} key={i}>
         <Paper
           key={user.id}
@@ -44,14 +46,22 @@ const UsersCard = ({ users }: UsersProps) => {
           onClick={() => navigate(`/users/${user.id}`)}
         >
           <CardContent>
-            <Typography variant="h5" component="h2" sx={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+            <Typography
+              variant="h5"
+              component="h2"
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               {user.nickname} {handleBadge(user.email)}
             </Typography>
             <Typography color="textSecondary">{user.email}</Typography>
           </CardContent>
         </Paper>
-        </Grid>
-    
+      </Grid>
     ));
   };
 

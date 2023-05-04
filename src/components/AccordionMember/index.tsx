@@ -44,7 +44,7 @@ export default function AccordionMember(props: any) {
     }
     return (
       <Typography>
-        <p>Mes demandes en cours:</p>
+        <p>Mon historique de commande:</p>
         {users.length === 0 ? (
           "Aucune demande en cours"
         ) : (

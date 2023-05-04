@@ -19,7 +19,7 @@ import {
 import GroupIcon from "@mui/icons-material/Group";
 import { useEffect, useState } from "react";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import BasicPagination from "../pages/BasicPagination";
+import BasicPagination from "../../pages/BasicPagination";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";

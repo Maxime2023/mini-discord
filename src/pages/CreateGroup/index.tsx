@@ -11,30 +11,26 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
-import { useParams } from "react-router-dom";
-import DisplayNotification from "../../DisplayNotification";
+import DisplayNotification from "../../components/DisplayNotification";
 
 const theme = createTheme();
 
-export default function CreateThread() {
+export default function CreateGroup() {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
-  const { id } = useParams();
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     setLoading(true);
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const body = {
-      title: data.get("title"),
-      content: data.get("content"),
-      relatedGroup: `api/groups/${id}`,
+      name: data.get("groupName"),
+      description: data.get("description"),
     };
-    console.log(body, id);
     const apiUrl = process.env.REACT_APP_API_URL;
     const config = {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     };
-    axios.post(`${apiUrl}/threads`, body, config).then((res) => {
+    axios.post(`${apiUrl}/groups`, body, config).then((res) => {
       setLoading(false);
       setOpen(true);
     });
@@ -43,7 +39,7 @@ export default function CreateThread() {
   return (
     <ThemeProvider theme={theme}>
       <DisplayNotification
-        message="Le thread a été correctement créé."
+        message="Le groupe a été correctement créé."
         open={open}
         onClose={() => setOpen(false)}
       />
@@ -61,7 +57,7 @@ export default function CreateThread() {
             <GroupAddIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Créer un thread
+            Créer un groupe
           </Typography>
           <Box
             component="form"
@@ -73,9 +69,9 @@ export default function CreateThread() {
               margin="normal"
               required
               fullWidth
-              id="title"
-              label="Titre du thread"
-              name="title"
+              id="groupName"
+              label="Nom du groupe"
+              name="groupName"
               autoFocus
             />
             <TextField
@@ -85,10 +81,10 @@ export default function CreateThread() {
               margin="normal"
               required
               fullWidth
-              name="content"
-              label="Contenu"
-              type="content"
-              id="content"
+              name="description"
+              label="description"
+              type="description"
+              id="description"
             />
             <Button
               type="submit"
@@ -99,7 +95,7 @@ export default function CreateThread() {
               {loading ? (
                 <CircularProgress style={{ color: "white" }} size={25} />
               ) : (
-                "  Créer un Thread"
+                "  Créer le groupe"
               )}
             </Button>
           </Box>

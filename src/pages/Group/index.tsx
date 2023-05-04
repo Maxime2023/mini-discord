@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import DisplayThreads from "../../DisplayThreads";
+import DisplayThreads from "../../components/DisplayThreads";
 import { useParams } from "react-router-dom";
 import Grid from "@mui/material/Grid";
-import DisplayUsersInGroup from "../../DisplayUsersInGroup";
-import SearchBar from "../../SearchBar";
+import DisplayUsersInGroup from "../../components/DisplayUsersInGroup";
+import SearchBar from "../../components/SearchBar";
 
 const Group = () => {
   const [threads, setThreads] = useState([]);
@@ -103,8 +103,10 @@ const Group = () => {
   //   );
   // }
 
+
   return (
     <Grid container spacing={2}>
+      
       <Grid item xs={9}>
         <SearchBar placeholder="Rechercher un thread" onChange={handleSearch}/>
         <DisplayThreads
@@ -123,6 +125,7 @@ const Group = () => {
           handlePageUsers={handlePageUsers}
         />
       </Grid>
+    
     </Grid>
   );
 };

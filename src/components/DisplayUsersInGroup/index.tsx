@@ -1,6 +1,6 @@
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
-import BasicPagination from "../pages/BasicPagination";
+import BasicPagination from "../../pages/BasicPagination";
 
 const DisplayUsersInGroup = ({ users, totalPage, handlePageUsers }: any) => {
   return (

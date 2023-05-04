@@ -6,14 +6,27 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 import { useNavigate } from "react-router-dom";
-import { changeSideBarState } from "../../Redux/Store";
+import { changeSideBarState, userEmail } from "../../Redux/Store";
 import { useDispatch } from "react-redux";
 import GroupIcon from "@mui/icons-material/Group";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import socketIoClient from "socket.io-client";
+import { useSelector } from "react-redux";
+const ENDPOINT = "http://127.0.0.1:4001";
 
 export default function ButtonAppBar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const socket = socketIoClient(ENDPOINT);
+  const userEmailStore = useSelector(userEmail)
+
+  const handleLogout = () => {
+    if (localStorage.getItem("token")) {
+      socket.emit("logout", userEmailStore)
+    }
+    navigate("/signIn");
+    localStorage.clear();
+  }
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -76,10 +89,9 @@ export default function ButtonAppBar() {
           ></Typography>
           <Button
             color="inherit"
-            onClick={() => {
-              navigate("/signIn");
-              localStorage.clear();
-            }}
+            onClick={() => 
+              handleLogout()
+            }
           >
             {localStorage.getItem("token") ? "Se déconnecter" : "Se connecter"}
           </Button>

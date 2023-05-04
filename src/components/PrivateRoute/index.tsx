@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import SignInSide from "../pages/SignIn";
+import SignInSide from "../../pages/SignIn";
 
 const PrivateRoute = ({ children }: any) => {
   const navigate = useNavigate();

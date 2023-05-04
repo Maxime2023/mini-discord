@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import MediaControlCard from "../MediaControlCard";
 import Container from "@mui/material/Container";
 import CircularProgress from "@mui/material/CircularProgress";
+import BasicPagination from "../../pages/BasicPagination";
 
 export default function DisplayThreads({ threads, onChange, totalPageThreads, handlePageThreads, loading }: any) {
   let { id } = useParams();
@@ -50,8 +51,9 @@ export default function DisplayThreads({ threads, onChange, totalPageThreads, ha
         {threads.map((thread: any, i: number) => displayThread(thread, i))}
       </Grid>
       
-      {/* impossible de bien utiliser la pagination car elle ne fonctionne pas sur le endpoint api/threads 
-      {totalPageThreads > 0 && <BasicPagination page={handlePageThreads} numberPage={Math.ceil(totalPageThreads / 30)} />} */} 
+       {/* impossible de bien utiliser la pagination car elle ne fonctionne pas sur le endpoint api/threads  */}
+      {totalPageThreads > 0 && <BasicPagination page={handlePageThreads} numberPage={Math.ceil(totalPageThreads / 30)} />}
+  
     </Box>
   );
 }

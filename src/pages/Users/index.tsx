@@ -1,14 +1,14 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import UsersCard from "../../UsersCards";
+import UsersCard from "../../components/UsersCards";
 import { useDispatch, useSelector } from "react-redux";
 import {
   usersStore,
   changeUsersState,
   userSubscribedGroups,
-} from "../../../Redux/Store";
+} from "../../Redux/Store";
 import BasicPagination from "../BasicPagination";
-import DisplayModal from "../../DisplayModal";
+import DisplayModal from "../../components/DisplayModal";
 
 type User = {
   "@id": string;

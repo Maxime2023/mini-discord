@@ -1,26 +1,30 @@
-import { Box } from "@mui/material";
-import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { IUser } from "../../types";
+import { IUser } from "../../components/types";
 import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
+import GroupsAccordion from "../../components/GroupsAccordion";
+import Container from "@mui/material/Container";
+import ProfileComp from "../../components/ProfileComp";
 
-const User = () => {
+export default function Profile() {
   const [user, setUser] = useState<IUser>();
   const [isLoading, setIsLoading] = useState(false);
-  let { userId } = useParams();
 
   useEffect(() => {
     setIsLoading(true);
     const apiUrl = process.env.REACT_APP_API_URL;
+    const config = {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    };
     axios
-      .get(`${apiUrl}/users/${userId}`)
+      .get(`${apiUrl}/users/105/info`, config)
       .then((res) => {
         setUser(res.data);
         setIsLoading(false);
       })
       .catch((error) => console.log(error.message));
-  }, [userId]);
+  }, []);
 
   if (isLoading) {
     return (
@@ -36,22 +40,15 @@ const User = () => {
       </Box>
     );
   }
-
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        flexDirection: "column",
-      }}
-    >
-      <Box>Id : {userId}</Box>
-      <Box>Email : {user?.email}</Box>
-      <Box>Nickname : {user?.nickname}</Box>
-    </Box>
+    <Container maxWidth="sm" style={{ paddingTop: 20 }}>
+      <ProfileComp
+        email={user?.email}
+        id={user?.id}
+        nickname={user?.nickname}
+      />
+      <Box sx={{ padding: 2 }}> Mes groupes créés :</Box>
+      <GroupsAccordion />
+    </Container>
   );
-};
-
-export default User;
+}

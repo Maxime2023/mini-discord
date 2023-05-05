@@ -8,7 +8,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import Container from "@mui/material/Container";
 import { CircularProgress } from "@mui/material";
-import {userId, userNickName} from "../../Redux/Store"
+import { userId, userNickName } from "../../Redux/Store";
 import { useSelector } from "react-redux";
 import socketIoClient from "socket.io-client";
 const ENDPOINT = "http://127.0.0.1:4001";
@@ -27,14 +27,13 @@ const MessagingComponent: React.FC<IChatProps> = ({ username }) => {
   const [inputValue, setInputValue] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const socket = socketIoClient(ENDPOINT);
 
   let { threadId } = useParams();
   const user: any = useSelector(userId);
   const nickname: any = useSelector(userNickName);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  
+
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
@@ -42,8 +41,7 @@ const MessagingComponent: React.FC<IChatProps> = ({ username }) => {
   };
 
   useEffect(() => {
-    scrollToBottom();
-    setIsScrolled(true)
+    setIsScrolled(true);
   }, [isScrolled]);
 
   useEffect(() => {
@@ -51,21 +49,25 @@ const MessagingComponent: React.FC<IChatProps> = ({ username }) => {
     const config = {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     };
-    // setInterval(() => {
-      axios.get(`${apiUrl}/threads/${threadId}/messages`, config).then((res) => {
-        setMessages(res.data["hydra:member"]);
-        setIsLoading(false);
-      });
-    // }, 1000);
-  }, [])
+    axios.get(`${apiUrl}/threads/${threadId}/messages`, config).then((res) => {
+      setMessages(res.data["hydra:member"]);
+      setIsLoading(false);
+    });
+  }, []);
 
   useEffect(() => {
-    socket.on("new message", (data) => {
+    const socket = socketIoClient(ENDPOINT);
+    socket.on("new message", (data: any) => {
       if (data.threadId === threadId) {
-        setMessages((messages) => [...messages, data.message]);
+        console.log("new reload");
+        scrollToBottom();
+        setMessages((messages) => [...messages, data]);
       }
     });
-  }, [threadId]);
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     setIsLoading(true);
@@ -78,19 +80,24 @@ const MessagingComponent: React.FC<IChatProps> = ({ username }) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (inputValue.trim() !== "") {
-      socket.emit("new message", {threadId, message: inputValue })
+      console.log("triggered");
+      const socket = socketIoClient(ENDPOINT);
+      socket.emit("new message", {
+        owner: username,
+        threadId,
+        content: inputValue,
+      });
       const apiUrl = process.env.REACT_APP_API_URL;
       const config = {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       };
-      setMessages([...messages, { owner: username, content: inputValue }]);
+      // setMessages([...messages, { owner: username, content: inputValue }]);
       setInputValue("");
-      axios
-        .post(
-          `${apiUrl}/messages`,
-          { content: inputValue, thread: `api/threads/${threadId}` },
-          config
-        )
+      axios.post(
+        `${apiUrl}/messages`,
+        { content: inputValue, thread: `api/threads/${threadId}` },
+        config
+      );
     }
   };
 
@@ -110,37 +117,66 @@ const MessagingComponent: React.FC<IChatProps> = ({ username }) => {
   }
 
   const handleMessages = (message: any, index: any) => {
-    let owner = message.owner.replace("/api/users/", "")
+    let owner = message.owner.replace("/api/users/", "");
     if (owner === user.toString() || owner === nickname) {
       return (
-        <Box style={{color: "black", justifyContent: "right", display: "flex", flexDirection: "column", padding: 5}}>
-          <Box style={{textAlign: 'right', color: 'black', backgroundColor: "whitesmoke", padding: 10, borderRadius: 10}}>
-          <Typography key={index} >
-        <strong> {message.owner} :</strong>
-        <div>{message.content}</div>
-        </Typography>
+        <Box
+          style={{
+            color: "black",
+            justifyContent: "right",
+            display: "flex",
+            flexDirection: "column",
+            padding: 5,
+          }}
+        >
+          <Box
+            style={{
+              textAlign: "right",
+              color: "black",
+              backgroundColor: "whitesmoke",
+              padding: 10,
+              borderRadius: 10,
+            }}
+          >
+            <Typography key={index}>
+              <strong> {message.owner} :</strong>
+              <div>{message.content}</div>
+            </Typography>
           </Box>
-
         </Box>
-
-      ) 
+      );
     }
     return (
-      <Box style={{color: "black", justifyContent: "right", display: "flex", flexDirection: "column", padding: 5}}>
-      <Box style={{textAlign: 'left', backgroundColor: "#1876d1", padding: 10, borderRadius: 10, color: "white"}}>
-      <Typography key={index} >
-    <strong> {message.owner} :</strong>
-    <div>{message.content}</div>
-    </Typography>
+      <Box
+        style={{
+          color: "black",
+          justifyContent: "right",
+          display: "flex",
+          flexDirection: "column",
+          padding: 5,
+        }}
+      >
+        <Box
+          style={{
+            textAlign: "left",
+            backgroundColor: "#1876d1",
+            padding: 10,
+            borderRadius: 10,
+            color: "white",
+          }}
+        >
+          <Typography key={index}>
+            <strong> {message.owner} :</strong>
+            <div>{message.content}</div>
+          </Typography>
+        </Box>
       </Box>
-
-    </Box>
-    //   <Typography key={index} style={{color: "#1876d1"}}>
-    //   <strong>{message.owner}: </strong>
-    //   <div>{message.content}</div>
-    // </Typography>
-    )
-  }
+      //   <Typography key={index} style={{color: "#1876d1"}}>
+      //   <strong>{message.owner}: </strong>
+      //   <div>{message.content}</div>
+      // </Typography>
+    );
+  };
 
   return (
     <>
@@ -162,9 +198,7 @@ const MessagingComponent: React.FC<IChatProps> = ({ username }) => {
             }}
             spacing={1}
           >
-            {messages.map((message, index) => 
-              handleMessages(message, index)
-            )}
+            {messages.map((message, index) => handleMessages(message, index))}
             <div ref={messagesEndRef} />
           </Stack>
         </Stack>

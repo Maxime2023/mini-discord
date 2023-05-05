@@ -11,7 +11,8 @@ export const slice = createSlice(
             userEmail: null,
             subscribedGroups: [],
             ownedGroups: [],
-            loggedUsers: []
+            loggedUsers: [],
+            socket: null
         },
         reducers: {
             changeSideBarState: (state, action) => {
@@ -38,10 +39,13 @@ export const slice = createSlice(
             changeLoggedUsers: (state, action) => {
                 state.loggedUsers = action.payload;
             },
+            changeSocket: (state, action) => {
+                state.socket = action.payload;
+            },
         },
     }
 );
-export const {  changeSideBarState, changeUsersState, changeUserEmail, changeUserId, changeUserNickName, changeOwnedGroups, changeSubscribedGroups, changeLoggedUsers } = slice.actions;
+export const {  changeSideBarState, changeUsersState, changeUserEmail, changeUserId, changeUserNickName, changeOwnedGroups, changeSubscribedGroups, changeLoggedUsers, changeSocket } = slice.actions;
 
 export const sideBarStore = state => state.store.isSideBarOpen;
 
@@ -58,5 +62,7 @@ export const userOwnedGroups = state => state.store.ownedGroups;
 export const userSubscribedGroups = state => state.store.subscribedGroups;
 
 export const loggedUsers = state => state.store.loggedUsers;
+
+export const socket = state => state.store.socket;
 
 export default slice.reducer;

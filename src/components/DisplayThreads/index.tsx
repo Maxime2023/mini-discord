@@ -12,9 +12,11 @@ export default function DisplayThreads({ threads, onChange, totalPageThreads, ha
   const displayThread = (thread: any, i: number) => {
     return (
       <Grid
-        onClick={() =>
-          navigate(`/groups/${id}${thread["@id"].replace("api/", "")}`)
-        }
+        onClick={() => {
+          if (thread["@id"]) {
+            navigate(`/groups/${id}${thread["@id"].replace("api/", "")}`) 
+          }
+        }}
         item
         xs={4}
       >

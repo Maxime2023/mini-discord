@@ -27,6 +27,8 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import DisplayNotification from "../DisplayNotification";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import Tooltip from "@mui/material/Tooltip";
+import socketIoClient from "socket.io-client";
+const ENDPOINT = "http://127.0.0.1:4001";
 
 type Anchor = "top" | "left" | "bottom" | "right";
 
@@ -37,7 +39,7 @@ type Group = {
 
 export default function SideBar() {
   const isSideBarOpen = useSelector(sideBarStore);
-  const [groups, setgroups] = useState([]);
+  const [groups, setgroups] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [totalPage, setTotalPage] = useState(0);
@@ -60,6 +62,16 @@ export default function SideBar() {
       setTotalPage(Math.ceil(res.data["hydra:totalItems"] / 30));
     });
   }, [isSideBarOpen, page]);
+
+  useEffect(() => {
+    const socket = socketIoClient(ENDPOINT);
+    socket.on("new group", (data) => {
+      setgroups((groups: any[]) => [...groups, data]);
+    });
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   const handlePage = (page: number) => {
     setPage(page);
@@ -238,7 +250,6 @@ export default function SideBar() {
       </List>
       <Divider />
       {listElements()}
-
     </Box>
   );
 

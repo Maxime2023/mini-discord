@@ -10,9 +10,10 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
-import axios from "axios";
 import { useParams } from "react-router-dom";
 import DisplayNotification from "../../components/DisplayNotification";
+import socketIoClient from "socket.io-client";
+const ENDPOINT = "http://127.0.0.1:4001";
 
 const theme = createTheme();
 
@@ -20,24 +21,36 @@ export default function CreateThread() {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const { id } = useParams();
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     setLoading(true);
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const body = {
+    // const body = {
+    //   title: data.get("title"),
+    //   content: data.get("content"),
+    //   relatedGroup: `api/groups/${id}`,
+    // };
+    // const apiUrl = process.env.REACT_APP_API_URL;
+    // const config = {
+    //   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    // };
+    // axios.post(`${apiUrl}/threads`, body, config).then((res) => {
+    //   setLoading(false);
+    //   setOpen(true);
+    // });
+    const socket = socketIoClient(ENDPOINT);
+    socket.emit("new thread", {
       title: data.get("title"),
       content: data.get("content"),
       relatedGroup: `api/groups/${id}`,
-    };
-    console.log(body, id);
-    const apiUrl = process.env.REACT_APP_API_URL;
-    const config = {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    };
-    axios.post(`${apiUrl}/threads`, body, config).then((res) => {
-      setLoading(false);
-      setOpen(true);
+      token: localStorage.getItem("token"),
     });
+    setLoading(false);
+    setOpen(true);
+    return () => {
+      socket.disconnect();
+    };
   };
 
   return (

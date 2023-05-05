@@ -7,21 +7,21 @@ import IconButton from "@mui/material/IconButton";
 import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 import { useNavigate } from "react-router-dom";
 import { changeSideBarState, userEmail } from "../../Redux/Store";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import GroupIcon from "@mui/icons-material/Group";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import socketIoClient from "socket.io-client";
-import { useSelector } from "react-redux";
 const ENDPOINT = "http://127.0.0.1:4001";
 
 export default function ButtonAppBar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const socket = socketIoClient(ENDPOINT);
   const userEmailStore = useSelector(userEmail)
 
   const handleLogout = () => {
     if (localStorage.getItem("token")) {
+      // const socket = socketIoClient(ENDPOINT);
+      const socket = socketIoClient(ENDPOINT);
       socket.emit("logout", userEmailStore)
     }
     navigate("/signIn");

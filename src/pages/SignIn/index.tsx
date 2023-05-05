@@ -25,7 +25,6 @@ import axios from "axios";
 import socketIoClient from "socket.io-client";
 const ENDPOINT = "http://127.0.0.1:4001";
 
-
 const theme = createTheme();
 
 export default function SignInSide() {
@@ -33,7 +32,6 @@ export default function SignInSide() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [error, setError] = useState(false);
-  const socket = socketIoClient(ENDPOINT);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     setLoading(true);
@@ -59,12 +57,18 @@ export default function SignInSide() {
             axios
               .get(`${process.env.REACT_APP_API_URL}/users/${id}`, config)
               .then((user) => {
-                socket.emit("user login", {username: email})
+                const socket = socketIoClient(ENDPOINT);
+                socket.emit("user login", { username: email });
                 setLoading(false);
                 const { ownedGroups, subscribedGroups } = user.data;
                 dispatch(changeOwnedGroups(ownedGroups));
                 dispatch(changeSubscribedGroups(subscribedGroups));
-                navigate("/users");
+                return () => {
+                  navigate("/users");
+                  socket.disconnect();
+                };
+           
+
               });
           });
       })

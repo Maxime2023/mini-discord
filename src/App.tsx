@@ -25,14 +25,13 @@ import {
 } from "./Redux/Store";
 import axios from "axios";
 import PrivateRoute from "./components/PrivateRoute";
-import DatePage from "./pages/DatePage";
 import socketIoClient from "socket.io-client";
 const ENDPOINT = "http://127.0.0.1:4001";
 
 function App() {
   const dispatch = useDispatch();
   const [isLoading, setLoading] = useState(false);
-  const socket = socketIoClient(ENDPOINT);
+
 
   useEffect(() => {
     setLoading(true);
@@ -58,17 +57,19 @@ function App() {
         });
     }
     setLoading(false);
-
   }, [dispatch]);
 
   useEffect(() => {
+    console.log("lsdfsfd")
+    const socket = socketIoClient(ENDPOINT);
     socket.on("newLogin", (data) => {
       console.log("usersslogged", data)
       dispatch(changeLoggedUsers(data))
     });
-  }, [socket, dispatch])
-
-
+    return () => {
+      socket.disconnect();
+    };
+  }, [])
 
   if (isLoading) {
     return (
@@ -92,7 +93,6 @@ function App() {
       <Routes>
         <Route path="/" element={<SignInSide />} />
         <Route path="/signUp" element={<SignUp />} />
-        <Route path="/socket" element={<DatePage />} />
         <Route path="/signIn" element={<SignInSide />} />
         <Route
           path="/groups/:id"

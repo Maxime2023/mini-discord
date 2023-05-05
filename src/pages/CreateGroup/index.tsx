@@ -10,8 +10,9 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
-import axios from "axios";
 import DisplayNotification from "../../components/DisplayNotification";
+import socketIoClient from "socket.io-client";
+const ENDPOINT = "http://127.0.0.1:4001";
 
 const theme = createTheme();
 
@@ -22,18 +23,29 @@ export default function CreateGroup() {
     setLoading(true);
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const body = {
+    // const body = {
+    //   name: data.get("groupName"),
+    //   description: data.get("description"),
+    // };
+    // const apiUrl = process.env.REACT_APP_API_URL;
+    // const config = {
+    //   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    // };
+    // axios.post(`${apiUrl}/groups`, body, config).then((res) => {
+    //   setLoading(false);
+    //   setOpen(true);
+    // });
+    const socket = socketIoClient(ENDPOINT);
+    socket.emit("new group", {
       name: data.get("groupName"),
       description: data.get("description"),
-    };
-    const apiUrl = process.env.REACT_APP_API_URL;
-    const config = {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    };
-    axios.post(`${apiUrl}/groups`, body, config).then((res) => {
-      setLoading(false);
-      setOpen(true);
+      token: localStorage.getItem("token"),
     });
+    setLoading(false);
+    setOpen(true);
+    return () => {
+      socket.disconnect();
+    };
   };
 
   return (

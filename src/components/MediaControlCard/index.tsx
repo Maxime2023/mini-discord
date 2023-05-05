@@ -14,6 +14,9 @@ export default function MediaControlCard({ thread, onChange }: any) {
 
   const deleteThread = (event: any) => {
     event.stopPropagation();
+    if (!thread["@id"]) {
+      return
+    }
     console.log(thread);
     onChange(thread["@id"]);
     const apiUrl = process.env.REACT_APP_API_URL;

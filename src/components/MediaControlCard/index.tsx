@@ -10,7 +10,6 @@ import { useSelector } from "react-redux";
 export default function MediaControlCard({ thread, onChange }: any) {
   const { owner, title } = thread;
   const user = useSelector(userId);
-  console.log(user, owner)
 
   const deleteThread = (event: any) => {
     event.stopPropagation();

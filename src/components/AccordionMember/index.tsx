@@ -44,7 +44,7 @@ export default function AccordionMember(props: any) {
     }
     return (
       <Typography>
-        <p>Mon historique de demandes:</p>
+        <span>Mon historique de demandes:</span>
         {users.length === 0 ? (
           "Aucune demande en cours"
         ) : (
@@ -53,6 +53,7 @@ export default function AccordionMember(props: any) {
       </Typography>
     );
   };
+  
 
   return (
     <Accordion key={"2"} onChange={() => getInfos()}>

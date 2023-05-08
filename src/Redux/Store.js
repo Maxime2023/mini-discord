@@ -6,7 +6,7 @@ export const slice = createSlice(
         initialState: {
             isSideBarOpen: false,
             users: [],
-            userId: null,
+            userId: "",
             userNickName: null,
             userEmail: null,
             subscribedGroups: [],

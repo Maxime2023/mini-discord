@@ -12,6 +12,7 @@ export default function DisplayThreads({ threads, onChange, totalPageThreads, ha
   const displayThread = (thread: any, i: number) => {
     return (
       <Grid
+      key={i}
         onClick={() => {
           if (thread["@id"]) {
             navigate(`/groups/${id}${thread["@id"].replace("api/", "")}`) 

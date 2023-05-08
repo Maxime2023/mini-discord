@@ -29,8 +29,8 @@ const DisplayUsersInGroup = ({ users, totalPage, handlePageUsers }: any) => {
           Il n'y a aucun utilisateurs dans le groupe.
         </Box>
       )}
-      {users.map((user: any) => (
-        <Paper style={{ padding: 10, margin: 2, display: "flex", justifyContent: "center", alignItems: "center" }}>{user.email}{handleBadge(user.email)}</Paper>
+      {users.map((user: any, i: any) => (
+        <Paper key={i} style={{ padding: 10, margin: 2, display: "flex", justifyContent: "center", alignItems: "center" }}>{user.email}{handleBadge(user.email)}</Paper>
       ))}
       {totalPage > 0 && (
         <BasicPagination
